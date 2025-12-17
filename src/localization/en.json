@@ -1,0 +1,76 @@
+{
+  "email": "Email",
+  "password": "Password",
+  "signin_button": "Sign In",
+  "signup": "Sign Up",
+  "app_name": "Smart E-Commerce",
+  "email_invalid": "Email is invalid",
+  "email_required": "Email is required",
+  "password_required": "Password is required",
+  "password_min_length": "Password must be at least 6 characters",
+  "user_not_found": "User not found",
+  "wrong_credentials": "Wrong email or password",
+  "signin_error": "An error occurred during sign-in",
+
+  
+  "username": "Username",
+  "create_account": "Create New Account",
+  "go_to_signin": "Go To Sign In",
+  "name_required": "Name is required",
+  "name_min": "Name must be at least 3 characters",
+  "password_min": "Password must be at least 6 characters",
+  "signup_success": "User Created Successfully",
+  "email_in_use": "This email is already in use",
+  "invalid_email": "The email address is invalid",
+  "weak_password": "The password is too weak.",
+  "signup_error": "An error occurred during sign-up.",
+
+  "continue": "Continue",
+  "delete":"Delete",
+  "item_price": "Item Price",
+  "taxes": "Taxes",
+  "shipping_fees": "Shipping Fees",
+  "order_total": "Order Total",
+  "currency_rs": "Rs.",
+  "cart_empty_title": "Your Cart Is Empty",
+  "cart_empty_subtitle": "Browse our products and find something you like.",
+  "start_shopping": "Start Shopping",
+
+
+  "tab_home": "Home",
+  "tab_cart": "Cart",
+  "tab_profile": "Profile",
+
+
+  "full_name": "Full Name",
+  "phone_number": "Phone Number",
+  "detailed_address": "Detailed Address",
+  "confirm": "Confirm",
+  "order_success": "Order Placed Successfully",
+  "order_error": "An error occurred while placing the order",
+  "phone_required": "Phone Number is required",
+  "phone_number_invalid": "Phone Number must be a number",
+  "phone_length": "Phone Number must be 10 digits",
+  "address_required": "Address is required",
+  "address_min": "Address must be at least 15 characters",
+
+  
+  "profile_my_orders": "My Orders",
+  "profile_language": "Language",
+  "profile_logout": "Logout",
+  "profile_change_language": "Change Language",
+  "language_english": "English",
+  "language_arabic": "Arabic",
+  "language_sinhala": "Sinhala",
+  "language_germen": "German",
+  "language_tamil": "Tamil",
+
+  "no_orders_yet": "No Orders Yet",
+  "order_details": "ORDER DETAILS :",
+  "order_total_price": "Total Price:",
+  "order_date": "Date:"
+
+
+
+
+}

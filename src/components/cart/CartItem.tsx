@@ -5,6 +5,8 @@ import { AppColors } from '../../styles/colors'
 import { AppFonts } from '../../styles/fonts'
 import { AntDesign, FontAwesome } from "@expo/vector-icons"
 import AppText from '../AppText'
+import { useTranslation } from 'react-i18next'
+
 
 const tempItem = {
     id: 1,
@@ -25,6 +27,9 @@ interface CartItemProps {
 }
 
 const CartItem = ({ title, price, imageURl, qty, onDeletePress, onIncreasePress, onReducePress }: CartItemProps) => {
+
+    const {t}=useTranslation()
+
     return (
         <View style={styles.container}>
             <View style={styles.imageContainer}>
@@ -49,7 +54,7 @@ const CartItem = ({ title, price, imageURl, qty, onDeletePress, onIncreasePress,
             <View style={styles.deleteContainer}>
                 <Pressable style={styles.deleteButton} onPress={onDeletePress}>
                     <AntDesign name='delete' size={s(14)} color={AppColors.redColor} />
-                    <AppText style={styles.deleteText}>Delete</AppText>
+                    <AppText style={styles.deleteText}>{t("delete")}</AppText>
                 </Pressable>
 
             </View>

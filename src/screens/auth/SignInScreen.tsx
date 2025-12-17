@@ -1,111 +1,142 @@
-import { Image, StyleSheet, Text, View } from 'react-native'
-import React, { useState } from 'react'
+import { Image, StyleSheet } from 'react-native'
+import React, { useMemo } from 'react'
 import AppSafeView from '../../components/views/AppSafeView'
 import { sharedPaddingHorizontal } from '../../styles/sharedStyle'
 import { IMAGES } from '../../constants/images-paths'
 import { s, vs } from 'react-native-size-matters'
-import AppTextInput from '../../components/inputs/AppTextInput'
 import AppText from '../../components/AppText'
 import AppButton from '../../components/buttons/AppButton'
 import { AppColors } from '../../styles/colors'
 import { useNavigation } from '@react-navigation/native'
 import AppTextInputController from '../../components/inputs/AppTextInputController'
-import { useForm } from "react-hook-form"
-import * as yup from "yup"
+import { useForm } from 'react-hook-form'
+import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { signInWithEmailAndPassword } from 'firebase/auth'
 import { auth } from '../../config/firebaseConfig'
 import { showMessage } from 'react-native-flash-message'
 import { useDispatch } from 'react-redux'
 import { setUserData } from '../../store/reducers/userSlice'
+import { useTranslation } from 'react-i18next'
 
-
-
-const schema = yup.object({
-    email: yup.string().email("Email is invalid").required("Email is required"),
-    password: yup.string().required("Password is required").min(6, "Password must be at least 6 characters"),
-}).required()
-
-type FormData = yup.InferType<typeof schema>
+type FormData = {
+  email: string
+  password: string
+}
 
 const SignInScreen = () => {
-    const navigation = useNavigation()
-    const dispatch = useDispatch()
+  const navigation = useNavigation<any>()
+  const dispatch = useDispatch()
+  const { t } = useTranslation()
 
-    const onLoginPress = async (data: FormData) => {
+  /**
+   * ✅ Schema MUST be inside component
+   * because it uses `t()` (translations)
+   */
+  const schema = useMemo(
+    () =>
+      yup.object({
+        email: yup
+          .string()
+          .email(t('email_invalid'))
+          .required(t('email_required')),
+        password: yup
+          .string()
+          .min(6, t('password_min_length'))
+          .required(t('password_required')),
+      }),
+    [t]
+  )
 
-        try {
-            const userCredentials = await signInWithEmailAndPassword(
-                auth,
-                data.email,
-                data.password
-            )
-            navigation.navigate("MainAppBottomTabs")
-            console.log(JSON.stringify(userCredentials, null, 3));
+  const { control, handleSubmit } = useForm<FormData>({
+    resolver: yupResolver(schema),
+  })
 
-            const userDataObj = {
-                uid: userCredentials.user.uid
-            }
+  const onLoginPress = async (data: FormData) => {
+    try {
+      const userCredentials = await signInWithEmailAndPassword(
+        auth,
+        data.email,
+        data.password
+      )
 
-            dispatch(setUserData(userDataObj))
-            console.log(data)
-        } catch (error: any) {
-            console.log(error)
-            let errorMessage = ""
-            if (error.code == "auth/user-not-found") {
-                errorMessage = "User not found"
-            } else if (error.code === "auth/invalid-credential") {
-                errorMessage = "Wrong email or password"
-            } else {
-                errorMessage = "An error occurred during sign-in "
-            }
+      dispatch(
+        setUserData({
+          uid: userCredentials.user.uid,
+        })
+      )
 
-            showMessage({
-                type: "danger",
-                message: errorMessage,
-            })
-        }
+      navigation.navigate('MainAppBottomTabs')
+    } catch (error: any) {
+      let errorMessage = t('signin_error')
 
+      if (error.code === 'auth/user-not-found') {
+        errorMessage = t('user_not_found')
+      } else if (error.code === 'auth/invalid-credential') {
+        errorMessage = t('wrong_credentials')
+      }
+
+      showMessage({
+        type: 'danger',
+        message: errorMessage,
+      })
     }
+  }
 
-    const { control, handleSubmit } = useForm<FormData>({
-        resolver: yupResolver(schema),
-    })
+  return (
+    <AppSafeView style={styles.container}>
+      <Image source={IMAGES.appLogo} style={styles.logo} />
 
-    return (
-        <AppSafeView style={styles.container}>
-            <Image source={IMAGES.appLogo} style={styles.logo} />
-            <AppTextInputController control={control} name={"email"} placeholder='Email' />
-            <AppTextInputController control={control} name={"password"} placeholder='Password' secureTextEntry />
-            <AppText style={styles.appName}>Smart E-Commerce</AppText>
-            <AppButton title='Login' onPress={handleSubmit(onLoginPress)} />
+      <AppTextInputController
+        control={control}
+        name="email"
+        placeholder={t('email')}
+      />
 
-            <AppButton title='Sign Up' style={styles.registerButton} onPress={() => { navigation.navigate("SignUpScreen") }} textColor={AppColors.primary} />
-        </AppSafeView>
-    )
+      <AppTextInputController
+        control={control}
+        name="password"
+        placeholder={t('password')}
+        secureTextEntry
+      />
+
+      <AppText style={styles.appName}>{t('app_name')}</AppText>
+
+      <AppButton
+        title={t('signin_button')}
+        onPress={handleSubmit(onLoginPress)}
+      />
+
+      <AppButton
+        title={t('signup')}
+        style={styles.registerButton}
+        textColor={AppColors.primary}
+        onPress={() => navigation.navigate('SignUpScreen')}
+      />
+    </AppSafeView>
+  )
 }
 
 export default SignInScreen
 
 const styles = StyleSheet.create({
-    container: {
-        alignItems: 'center',
-        paddingHorizontal: sharedPaddingHorizontal,
-    },
-    logo: {
-        height: s(150),
-        width: s(150),
-        marginBottom: vs(30),
-    },
-    appName: {
-        fontSize: s(16),
-        marginBottom: vs(20),
-
-    },
-    registerButton: {
-        backgroundColor: AppColors.white,
-        borderWidth: 1,
-        marginTop: vs(15),
-        borderColor: AppColors.primary,
-    }
+  container: {
+    alignItems: 'center',
+    paddingHorizontal: sharedPaddingHorizontal,
+  },
+  logo: {
+    height: s(150),
+    width: s(150),
+    marginBottom: vs(30),
+  },
+  appName: {
+    fontSize: s(16),
+    marginBottom: vs(20),
+  },
+  registerButton: {
+    backgroundColor: AppColors.white,
+    borderWidth: 1,
+    marginTop: vs(15),
+    borderColor: AppColors.primary,
+  },
 })
