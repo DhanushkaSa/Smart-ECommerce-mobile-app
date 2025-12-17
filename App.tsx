@@ -5,6 +5,7 @@ import { ActivityIndicator } from "react-native";
 import { store } from "./src/store/store";
 import React from "react";
 import { Provider } from "react-redux";
+import FlashMessage from "react-native-flash-message";
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -19,6 +20,7 @@ export default function App() {
   return (
     <Provider store={store}>
       <NavigationContainer>
+        <FlashMessage position="top" />
         <MainAppStack />
       </NavigationContainer>
     </Provider>

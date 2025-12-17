@@ -28,7 +28,7 @@ const OrderItem = ({ itemPrice, totalPrice, date }: OrderItemProps) => {
                 <View style={styles.details}>
 
                     <AppText style={styles.title}>Date: {date}</AppText>
-                    <AppText style={styles.subTitle}>{date}</AppText>
+                    
                 </View>
 
             </View>

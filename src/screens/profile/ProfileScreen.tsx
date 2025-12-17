@@ -10,15 +10,15 @@ import MyOrderScreen from '../cart/MyOrderScreen'
 import { useNavigation } from '@react-navigation/native'
 
 const ProfileScreen = () => {
-    const navigate=useNavigation()
+    const navigate = useNavigation()
 
     return (
         <AppSafeView>
 
             <HomeHeader />
-            <AppText variant='bold' style={{ fontSize: s(18), marginTop: vs(10) }}>Hello, Dhanushka</AppText>
+
             <View style={{ paddingHorizontal: sharedPaddingHorizontal }}>
-                <ProfileSectionButton title="My Orders" onPress={() => { navigate.navigate("MyOrderScreen")}} />
+                <ProfileSectionButton title="My Orders" onPress={() => { navigate.navigate("MyOrderScreen") }} />
                 <ProfileSectionButton title="Language" onPress={() => { }} />
                 <ProfileSectionButton title="Logout" onPress={() => { }} />
             </View>
